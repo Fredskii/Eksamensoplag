@@ -8,13 +8,39 @@ let joyY = 0;
 let canvasX = 1705;
 let canvasY = 791;
 
+// Opret ekstra canvas til de tilfældige cirkler
+let cirkelCanvas;
+
 function setup() {
   createCanvas(canvasX, canvasY);
+  
+  // Opret en ekstra canvas til de tilfældige cirkler
+  cirkelCanvas = createGraphics(width, height);
+  
+  tegnCirkler();
 }
 
 function draw() {
   background(200);
+
+  // Tegn den ekstra canvas på den primære canvas
+  image(cirkelCanvas, 0, 0);
+  
   Bevægelse();
+}
+
+function tegnCirkler() {
+  let antalCirkler = floor(random(30, 40));
+  
+  for (let i = 0; i < antalCirkler; i++) {
+    let x = random(width);
+    let y = random(height);
+    let radius = random(20, 40);
+    let farve = color(random(255), random(255), random(255));
+    
+    cirkelCanvas.fill(farve);
+    cirkelCanvas.circle(x, y, radius);
+  }
 }
 
 function Bevægelse() {
@@ -58,10 +84,6 @@ function Bevægelse() {
     cirkelY = canvasY;
   }
 
-  // Tegn cirklerne
+  // Tegn den bevægelige cirkel
   circle(cirkelX, cirkelY, cirkelR);
-  circle(cirkelX + canvasX, cirkelY, cirkelR);
-  circle(cirkelX - canvasX, cirkelY, cirkelR);
-  circle(cirkelX, cirkelY - canvasY, cirkelR);
-  circle(cirkelX, cirkelY + canvasY, cirkelR);
 }
