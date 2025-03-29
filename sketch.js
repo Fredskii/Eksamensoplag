@@ -1,28 +1,25 @@
-let cirkelX = 830;
-let cirkelY = 400;
-let cirkelD = 25;
-
-let joyX = 0;
-let joyY = 0;
-
-let canvasX = 1705;
-let canvasY = 791;
-
-// Opret ekstra canvas til de tilfældige cirkler
-let cirkelCanvas;
+let cirkelX = 830; let cirkelY = 400; let cirkelD = 25;
+let joyX = 0; let joyY = 0;
+let canvasX = 1705; let canvasY = 791;
+let cirkelCanvas; // Opret ekstra canvas til de tilfældige cirkler
 let cirkler = [];
 
 function setup() {
   createCanvas(canvasX, canvasY);
-  
   cirkelCanvas = createGraphics(width, height);
-  cirkelCanvas.noStroke();
   tegnCirkler();
 }
 
 function draw() {
-  background(200);
+  if (cirkelD < 20 || cirkler.length < 1) {
+    background(200);
+    textAlign(CENTER, CENTER);
+    textSize(50);  
+    text("GAME OVER", width / 2, height / 2);
+    return; 
+  }
 
+  background(200);
   image(cirkelCanvas, 0, 0); // Tegn den ekstra canvas på den primære canvas
 
   Bevægelse();
@@ -30,7 +27,7 @@ function draw() {
 }
 
 function tegnCirkler() {
-  let antalCirkler = floor(random(40, 50));
+  let antalCirkler = floor(random(40, 60));
 
   for (let i = 0; i < antalCirkler; i++) {
     let x = random(width);
@@ -67,8 +64,7 @@ function Bevægelse() {
   if (cirkelY > canvasY) { cirkelY = 0 };
   if (cirkelY < 0) { cirkelY = canvasY };
 
-  // Tegn den bevægelige cirkel
-  circle(cirkelX, cirkelY, cirkelD);
+  circle(cirkelX, cirkelY, cirkelD); // Tegn den bevægelige cirkel
 }
 
 function tjekKollision() {
@@ -82,7 +78,6 @@ function tjekKollision() {
         cirkelD += 3; // Vokser hvis den er større
       } else {
         cirkelD -= 5; // Bliver mindre hvis den er mindre
-        if (cirkelD < 20) { cirkelD = 20 }; // Minimumstørrelse
       }
       cirkler.splice(i, 1);
       opdaterCanvas(); // Fjerner alt indhold på cirkelCanvas, før der tegnes noget nyt
