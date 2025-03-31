@@ -18,7 +18,7 @@ function draw() {
     text("GAME OVER", width / 2, height / 2);
     return; 
   }
-  
+
   background(200);
   image(cirkelCanvas, 0, 0); // Tegn den ekstra canvas på den primære canvas
   Bevægelse();
@@ -31,13 +31,17 @@ function tegnCirkler() {
   for (let i = 0; i < antalCirkler; i++) {
     let x = random(width);
     let y = random(height);
-    let diameter = random(20, 40);
+    let diameter = round(random(20, 40));
     let farve = color(random(255), random(255), random(255));
 
     cirkler.push({ x, y, diameter, farve });
     cirkelCanvas.fill(farve);
     cirkelCanvas.noStroke();
     cirkelCanvas.circle(x, y, diameter);
+    
+    // Cirklernes diameter vises på cirklerne 
+    cirkelCanvas.fill(0); cirkelCanvas.textAlign(CENTER, CENTER);
+    cirkelCanvas.textSize(diameter / 2); cirkelCanvas.text(diameter, x, y+1) 
   }
 }
 
@@ -59,6 +63,7 @@ function Bevægelse() {
   if (cirkelY < 0) { cirkelY = canvasY };
 
   circle(cirkelX, cirkelY, cirkelD); // Tegn den bevægelige cirkel
+  textAlign(CENTER, CENTER); textSize(cirkelD / 2); text(cirkelD, cirkelX, cirkelY+1); // Den bevægelige cirkels diameter vises 
 }
 
 function tjekKollision() {
@@ -86,5 +91,8 @@ function opdaterCanvas() {
     cirkelCanvas.fill(c.farve);
     cirkelCanvas.noStroke();
     cirkelCanvas.circle(c.x, c.y, c.diameter);
+
+    cirkelCanvas.fill(0); cirkelCanvas.textAlign(CENTER, CENTER); 
+    cirkelCanvas.textSize(c.diameter / 2); cirkelCanvas.text(c.diameter, c.x, c.y+1);  
   }
 }
