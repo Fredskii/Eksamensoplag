@@ -1,12 +1,12 @@
 let cirkelX = 830; let cirkelY = 400; let cirkelD = 25;
 let joyX = 0; let joyY = 0;
 let canvasX = 1705; let canvasY = 791;
-let cirkelCanvas; // Opret ekstra canvas til de tilfældige cirkler
+let cirkelCanvas; 
 let cirkler = [];
 
 function setup() {
   createCanvas(canvasX, canvasY);
-  cirkelCanvas = createGraphics(width, height);
+  cirkelCanvas = createGraphics(width, height); // Opret ekstra canvas til de tilfældige cirkler
   tegnCirkler();
 }
 
@@ -18,10 +18,9 @@ function draw() {
     text("GAME OVER", width / 2, height / 2);
     return; 
   }
-
+  
   background(200);
   image(cirkelCanvas, 0, 0); // Tegn den ekstra canvas på den primære canvas
-
   Bevægelse();
   tjekKollision();
 }
@@ -36,7 +35,6 @@ function tegnCirkler() {
     let farve = color(random(255), random(255), random(255));
 
     cirkler.push({ x, y, diameter, farve });
-
     cirkelCanvas.fill(farve);
     cirkelCanvas.noStroke();
     cirkelCanvas.circle(x, y, diameter);
@@ -44,9 +42,7 @@ function tegnCirkler() {
 }
 
 function Bevægelse() {
-  // Nulstil bevægelsen for hver frame
-  joyX = 0;
-  joyY = 0;
+  joyX = 0; joyY = 0; // Nulstil bevægelsen for hver frame
 
   // Bevægelsestaster
   if (keyIsDown(87)) { joyY = -5 }; // W eller op
@@ -54,9 +50,7 @@ function Bevægelse() {
   if (keyIsDown(65)) { joyX = -5 }; // A eller venstre
   if (keyIsDown(68)) { joyX = 5 }; // D eller højre
 
-  // Opdater position
-  cirkelX += joyX;
-  cirkelY += joyY;
+  cirkelX += joyX; cirkelY += joyY; // Opdater position
 
   // Væggene
   if (cirkelX > canvasX) { cirkelX = 0 };
