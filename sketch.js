@@ -8,14 +8,16 @@ function setup() {
   createCanvas(canvasX, canvasY);
   cirkelCanvas = createGraphics(width, height); // Opret ekstra canvas til de tilfældige cirkler
   tegnCirkler();
+  opdaterCanvas(); 
+
+  genstartKnap = createButton("Genstart").position(width / 2 - 50, height / 2 + 60).size(100, 40).hide();
 }
 
 function draw() {
   if (cirkelD < 20 || cirkler.length < 1) {
-    background(200);
-    textAlign(CENTER, CENTER);
-    textSize(50);  
-    text("GAME OVER", width / 2, height / 2);
+    background(200); textAlign(CENTER, CENTER);
+    textSize(50); text("GAME OVER", width / 2, height / 2);
+    genstartKnap.show();
     return; 
   }
 
@@ -49,11 +51,15 @@ function Bevægelse() {
   joyX = 0; joyY = 0; // Nulstil bevægelsen for hver frame
 
   // Bevægelsestaster
-  if (keyIsDown(87)) { joyY = -5 }; // W eller op
-  if (keyIsDown(83)) { joyY = 5 }; // S eller ned
-  if (keyIsDown(65)) { joyX = -5 }; // A eller venstre
-  if (keyIsDown(68)) { joyX = 5 }; // D eller højre
+  if (keyIsDown(87)) { joyY = -6 }; // W eller op
+  if (keyIsDown(83)) { joyY = 6 }; // S eller ned
+  if (keyIsDown(65)) { joyX = -6 }; // A eller venstre
+  if (keyIsDown(68)) { joyX = 6 }; // D eller højre
 
+  // Lige hurtigt bevægelse i hver retning
+  let hastighed = 6; let længde = sqrt(joyX * joyX + joyY * joyY);
+  if (længde > 0) { joyX = joyX / længde * hastighed; joyY = joyY / længde * hastighed; }
+  
   cirkelX += joyX; cirkelY += joyY; // Opdater position
 
   // Væggene
@@ -88,11 +94,25 @@ function opdaterCanvas() {
   cirkelCanvas.clear();
   for (let i = 0; i < cirkler.length; i++) {
     let c = cirkler[i];
-    cirkelCanvas.fill(c.farve);
-    cirkelCanvas.noStroke();
-    cirkelCanvas.circle(c.x, c.y, c.diameter);
 
-    cirkelCanvas.fill(0); cirkelCanvas.textAlign(CENTER, CENTER); 
-    cirkelCanvas.textSize(c.diameter / 2); cirkelCanvas.text(c.diameter, c.x, c.y+1);  
+    if (cirkelD >= c.diameter) {
+      cirkelCanvas.stroke(0, 255, 0); // Grøn kant hvis man er større
+    } else {
+      cirkelCanvas.stroke(255, 0, 0); // Rød kant hvis den er farlig
+    }
+
+    cirkelCanvas.strokeWeight(2); cirkelCanvas.fill(c.farve); cirkelCanvas.circle(c.x, c.y, c.diameter); 
+    cirkelCanvas.noStroke(); cirkelCanvas.fill(0); cirkelCanvas.textAlign(CENTER, CENTER); 
+    cirkelCanvas.textSize(c.diameter / 2); cirkelCanvas.text(c.diameter, c.x, c.y + 1);
   }
 }
+
+function mousePressed() {
+  if (genstartKnap.mousePressed()) {
+    cirkelD = 25; cirkelX = canvasX / 2; cirkelY = canvasY / 2; cirkler = [];
+    tegnCirkler();
+    opdaterCanvas();
+    genstartKnap.hide(); 
+  }
+}
+
