@@ -11,6 +11,14 @@ function setup() {
   opdaterCanvas(); 
 
   genstartKnap = createButton("Genstart").position(width / 2 - 50, height / 2 + 60).size(100, 40).hide();
+
+  genstartKnap.mousePressed(function() {
+    cirkelD = 25; cirkelX = canvasX / 2; cirkelY = canvasY / 2;
+    cirkler = [];
+    tegnCirkler();
+    opdaterCanvas();
+    genstartKnap.hide();
+  });
 }
 
 function draw() {
@@ -107,12 +115,5 @@ function opdaterCanvas() {
   }
 }
 
-function mousePressed() {
-  if (genstartKnap.mousePressed()) {
-    cirkelD = 25; cirkelX = canvasX / 2; cirkelY = canvasY / 2; cirkler = [];
-    tegnCirkler();
-    opdaterCanvas();
-    genstartKnap.hide(); 
-  }
-}
+
 
